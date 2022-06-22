@@ -1,0 +1,26 @@
+<app-rhome></app-rhome>
+
+<div class="container" id="mycontainer">
+  <div class="row">
+    <div *ngFor="let refferal of refferals" class="col-md-0 col-xl-4 p-3">
+      <div class="card m-b-30 h-100 shadow-lg p-2 mb-0 bg-white rounded border border-dark">
+        <div class="card-body" style="text-align: center;">
+          <p>
+            <b>Referral Id</b>: {{ refferal.id }} <br>
+            <b>Job Id</b> : {{ refferal.jobid }}<br>
+            <b>Employee Id</b> : {{ refferal.empid }}<br>
+            <b>Candidate Name</b> : {{ refferal.name }}<br>
+            <b>Location</b> : {{ refferal.location}}<br>
+            <b>Status</b> : {{refferal.status}}<br>
+            <br>
+            <button type="button" class="btn btn-outline-success func"  (click)="onClickdownloadresume(refferal.resumeid);" >Download Resume</button> 
+            <br>
+            <button type="button" class="btn btn-success func" (click)="onClickAccepted(refferal.id);exit()" [disabled]="refferal.status=='Selected' ||  refferal.status=='Rejected'">Selected</button> 
+            <br>
+            <button type="button" class="btn btn-danger func" (click)="onClickRejected(refferal.id);exit()" [disabled]="refferal.status=='Selected' ||  refferal.status=='Rejected'">Rejected</button> 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

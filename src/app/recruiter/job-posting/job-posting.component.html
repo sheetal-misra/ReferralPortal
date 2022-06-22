@@ -1,0 +1,262 @@
+<app-rhome></app-rhome>
+
+<!--Job Posting-->
+
+<div class="container" id="mycontainer">
+   <div class="right">
+    <div class="dropdown">
+      <button type="button" class="dropdown-toggle btn btn-outline-primary" data-toggle="dropdown" style="padding: 10px; position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 250px;">
+        <a>+ ADD JOB</a>
+      </button>
+      <ul class="dropdown-menu">
+        <li style="text-align:center; width: 250px;"><a class="dropdown-item tooltips" (click)="onOpenModal('add')">SINGLE UPLOAD</a></li>
+        <li style="text-align:center; width: 250px;"><a class="dropdown-item tooltips" (click)="onOpenModal('csv')">BULK UPLOAD</a></li>
+      </ul>
+    </div>
+</div>
+
+
+
+   <div class="left">
+    <form class="my-2 my-lg-0 border border-dark rounded">
+      <input type="search" (ngModelChange)="searchJobs(key.value)" #key="ngModel" ngModel
+       name="key" id="searchName" class="form-control mr-sm-2" placeholder="Find job postings" style="text-align: center;" required>
+   </form>
+   </div> <br><br><br><br>
+
+  <div class="row" style="background-image: linear-gradient(#FFE4B5, #C0C0C0);">
+    <div *ngFor="let job of jobs" class="col-md-12 col-xl-4 p-3">
+       <div class="card mb-5 bg-light rounded border border-dark" >
+         <div class="card-header bg-transparent "> 
+            <b>Job Id:{{job?.jobid}}</b>
+      </div>
+      <div class="card-body bg-light">
+        <ul class="list-group list-group-flush bg-light">
+          <li class="list-group-item"><b>Title:</b> {{job?.title}}</li>
+          <li class="list-group-item"><b>Type:</b> {{job?.requirements}}</li>
+          <li class="list-group-item"><b>Location:</b> {{job?.location}}</li>
+          <li class="list-group-item"><b>Experience:</b> {{job?.experience}}</li>
+          <li class="list-group-item"><b>Description:</b> {{job?.description}}</li>
+          <li class="list-group-item"><b>For any job post related query please contact to this mail:&nbsp;</b> <span style="color:blue;">{{job?.email}}</span></li>
+        </ul>
+      </div>
+        <div class=" card-footer btn-group btn-group-sm border border-dark rounded">
+         <a (click)="onOpenModal('edit',job)" class="btn  tooltips p-2" data-placement="top" data-original-title="Edit" id="job_edit" *ngIf="job.referral==false">Edit</a>
+         <a (click)="onOpenModal('delete',job)" class="btn btn-light tooltips p-2" data-placement="top" data-original-title="Delete" id="job_del">Del</a>
+      </div>
+       </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="addJobModal" tabindex="-1" role="dialog" aria-labelledby="addJobModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="addJobModalLabel">Add A Job</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #addForm="ngForm" (ngSubmit)="onAddJob(addForm)">
+           <div class="form-group">
+             <label for="title">Job Name<span style="color:red;">*</span></label>
+             <input type="text" ngModel name="title" class="form-control" id="title" placeholder="Job Name" required>
+          </div>
+          <div class="form-group">
+           <label for="jobid">Job ID<span style="color:red;">*</span></label>
+           <input type="number" ngModel name="jobid" class="form-control" id="jobid" placeholder="Job ID" required>
+        </div>
+          <div class="form-group">
+           <label for="description">Description<span style="color:red;">*</span></label>
+           <input type="text" ngModel name="description" class="form-control" id="description" placeholder="Description" required>
+          </div>
+          <div class="form-group">
+           <label for="location">Location<span style="color:red;">*</span></label>
+           <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Location" required>
+          </div>
+          <div class="form-group">
+           <label for="experience">Experience<span style="color:red;">*</span></label>
+           <input type="text" min="0" max="40" ngModel name="experience" class="form-control" id="experience" placeholder="Experience" required>
+          </div>
+          <div class="form-group">
+           <label for="type">Type<span style="color:red;">*</span></label>
+           <input type="text" ngModel name="requirements" class="form-control" id="type" placeholder="Type" required>
+          </div>
+          <div class="form-group">
+           <label for="email">Email<span style="color:red;">*</span></label>
+           <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+           <div class="modal-footer">
+              <button type="button" id="add-job-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >ADD JOB</button>
+           </div>
+           </form>
+        </div>
+     </div>
+   </div>
+ </div>
+ 
+
+<br><br>
+
+<!--CSV Modal-->
+<div class="modal fade" id="addCSVModal" tabindex="-1" role="dialog" aria-labelledby="addCSVModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addCSVrModalLabel">Add Jobs</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #csvForm="ngForm">
+         <div class="form-group">
+          <label for="myFile">CSV/EXCEL File</label>
+            <input class="form-control" type="file" (change)="onChange($event)"/>
+         </div>
+          <div class="modal-footer">
+             <button type="button" id="add-csv-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary" (click)="onUpload();openPopup1()">ADD</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Job Modal-->
+<div class="modal fade" id="updateJobModal" tabindex="-1" role="dialog" aria-labelledby="JobEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="updateJobModalLabel">Edit existing job post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #editForm="ngForm">
+            <div class="form-group">
+              <label for="title">Job Name <span style="color:red;">*</span> </label>
+              <input type="text" ngModel="{{editJob?.title}}" name="title" class="form-control" id="title" placeholder="Job Name" required>
+           </div>
+           <div class="form-group">
+            <label for="jobid">Job ID <span style="color:red;">*</span> </label>
+            <input type="number" maxlength="4" ngModel="{{editJob?.jobid}}" name="jobid" class="form-control" id="jobid" placeholder="Job ID" required>
+         </div>
+           <div class="form-group">
+            <label for="description">Description <span style="color:red;">*</span> </label>
+            <input type="text"  ngModel="{{editJob?.description}}" name="description" class="form-control" id="description" placeholder="Description" required>
+           </div>
+           <div class="form-group">
+            <label for="location">Location <span style="color:red;">*</span> </label>
+            <input type="text" ngModel="{{editJob?.location}}" name="location" class="form-control" id="location" placeholder="Location" required>
+           </div>
+           <div class="form-group">
+            <label for="experience">Experience <span style="color:red;">*</span> </label>
+            <input type="number" min="0" max="40" ngModel="{{editJob?.experience}}" name="experience" class="form-control" id="experience" placeholder="Experience" required>
+           </div>
+           <div class="form-group">
+            <label for="requirements">Type <span style="color:red;">*</span> </label>
+            <input type="text" ngModel="{{editJob?.requirements}}" name="requirements" class="form-control" id="requirements" placeholder="Type" required>
+           </div>
+           <div class="form-group">
+            <label for="email">Email <span style="color:red;">*</span> </label>
+            <input type="email"  ngModel="{{editJob?.email}}" name="email" class="form-control" id="email" placeholder="Email" required>
+           </div>
+          <div class="modal-footer">
+             <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button (click)="onUpdateJob(editForm.value);openPopup2()" data-dismiss="modal" class="btn btn-primary" >UPDATE JOB</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<br><br>
+
+<!--Delete Job Modal-->
+<div class="modal fade" id="deleteJobModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete existingjob</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>If you click on Yes,the job post is permanently deleted?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn" data-dismiss="modal">No</button>
+              <button (click)="onDeleteJob(deleteJob?.jobid!);openPopup3()" class="btn" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle1}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Your Jobs posted successfully.</h4>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup1()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle2}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Your Job updated successfully.</h4>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup2()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle3}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Your Job deleted Successfully</h4>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup3()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle4}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Sorry! No jobs found</h4>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup4()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,124 @@
+<app-ehome></app-ehome>
+
+<!--Job Posting-->
+<div class="container" id="mycontainer">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  
+  
+   <div class="left">
+      <form class="my-2 my-lg-0 border border-dark rounded">
+        <input type="search" (ngModelChange)="searchJobs(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Find job postings" style="text-align: center;" required>
+     </form>
+     </div> <br><br>
+  
+  
+   <div class="row" style="background-image: linear-gradient(#FFE4B5, #C0C0C0);">
+      <div *ngFor="let job of jobs" class="col-md-12 col-xl-4 p-3">
+         <div class="card mb-5 bg-light rounded border border-dark" >
+            <div class="card-header bg-transparent ">
+                  <li class="list-group-item"><b>Job Id:{{job?.jobid}}</b></li>
+            </div>
+            <div class="card-body bg-light">
+               <ul class="list-group list-group-flush bg-light">
+               <li class="list-group-item"><b>Title:</b> {{job?.title}}</li>
+               <li class="list-group-item"><b>Type:</b> {{job?.requirements}}</li>
+               <li class="list-group-item"><b>Location:</b> {{job?.location}}</li>
+               <li class="list-group-item"><b>Experience:</b> {{job?.experience}}</li>
+               <li class="list-group-item"><b>Description:</b> {{job?.description}}</li>
+               <li class="list-group-item"><b>For any job post related query please contact to this mail:&nbsp;</b><span style="color:blue;">{{job?.email}}</span></li>
+            </ul>
+           </div>
+               <div class="card-footer card-body btn-group btn-group-sm" style="text-align:center;">
+                  <button type="button" class="btn btn-success" data-toggle="modal" (click)="jobid = onclickgetjobid(job.jobid)" (click)="emp=onclickgetemp()"
+                  value="Register" data-target="#myModal">Apply
+                  </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title" id="myModalLabel">Refferal Details</h4>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+        </div>
+        <div class="modal-body">
+         <form #myForm="ngForm" (ngSubmit)="onSubmit();">
+            <div class="form-group">
+               <label><b>Job ID:<span style="color:red;">*</span></b></label>
+               <input type="text" class="form-control" id="jobid" [(ngModel)]="candidate.jobid" name="jobid"
+               min="2" max="10" placeholder={{jobid}} value="{{jobid}}" required>
+            </div>
+            <div class="form-group">
+               <label><b>Employee ID:<span style="color:red;">*</span></b></label>
+               <input type="text" class="form-control" id="empid" [(ngModel)]="candidate.empid" name="empid"
+               min="2" max="10" value="{{emp}}" placeholder={{emp}} required>
+
+            </div>
+            <div class="form-group">
+               <label><b>Candidate Name:<span style="color:red;">*</span></b></label>
+               <input type="text" class="form-control" id="name" [(ngModel)]="candidate.name" name="name" min="2" max="30" required>
+            </div>
+            <div class="form-group">
+               <label><b>Location:<span style="color:red;">*</span></b></label>
+               <input type="text" class="form-control" id="name" [(ngModel)]="candidate.location" min="2" max="30" name="location"
+                  required>
+            </div>
+            <form #form="ngForm" (ngSubmit)="upload()">
+               <label><b>Resume:<span style="color:red;">*</span></b></label><br>
+               <input ng-model="file_upload" name="file" type="file" accept=".pdf" (change)="fileChange($event)"#fileInput required>
+               <br>
+               <br>
+               <button type="submit" class="btn btn-success" [disabled]="fileInput.value=='' || !form.valid">Upload</button>
+            </form>
+            <br>
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-primary" (click)="closePopup();openPopup1()" [disabled]="fileInput.value=='' " >Submit</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+               
+
+            </div>
+         </form>
+        </div>
+      </div>
+     </div>
+    </div>
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle1}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Thanks for your Response</h4>
+         </div>
+         <div class="modal-body">
+            <p>Your Referral Details are saved .</p>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup1()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayStyle2}">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Sorry! No jobs found</h4>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="closePopup2()"  >
+               Close
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

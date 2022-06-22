@@ -1,0 +1,70 @@
+.left{
+    float:left;
+    width: 14.7%;
+    
+}
+.right{
+    float: right;
+    width: 85.3%;
+}
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+  }
+   
+  .sidebar a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
+  
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+
+ .column {
+    float: left;
+    width: 75%;
+    padding: 0rem 0rem;
+  }
+  
+  .row {
+      margin: 0rem 0rem;
+    }
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+
+  /* @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  } */
+  
+  .card {
+    box-shadow: 0 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    background-color: #f1f1f1;
+  }
+  .func{
+      margin:0.2rem;
+      width: 100%;
+  }
